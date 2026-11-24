@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SITE_BASE: /portfolio-front
+      SITE_BASE: /valkary
       LEPTOS_OUTPUT_NAME: blog
     steps:
       - name: Checkout repository

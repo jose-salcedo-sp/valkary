@@ -4,7 +4,7 @@ pub mod posts;
 pub use components::{
     Markdown, P, Section, SeriesNav, SkillCarousel, SkillTab, Subtitle, TableOfContents,
 };
-pub use posts::{Post, SERIES, Series, TocSection, all_posts, find_post};
+pub use posts::{Post, SERIES, Series, TocSection, all_posts, find_post, post_url};
 
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
@@ -62,7 +62,7 @@ pub fn App() -> impl IntoView {
                 <main>
                     <Routes fallback=|| view! { <p class="text-zinc-400">"Page not found."</p> }>
                         <Route path=StaticSegment("") view=HomePage/>
-                        <Route path=path!("posts/:slug") view=PostPage/>
+                        <Route path=path!("posts/:series/:slug") view=PostPage/>
                     </Routes>
                 </main>
             </div>
@@ -80,7 +80,7 @@ fn HomePage() -> impl IntoView {
                     .iter()
                     .filter_map(|series| series.posts.first().map(|first| (series, first)))
                     .map(|(series, first)| {
-                        let href = site_url(&format!("/posts/{}", first.slug));
+                        let href = post_url(series, first);
                         view! {
                             <li class="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4 transition hover:border-zinc-700 sm:p-6">
                                 <article class="space-y-2">
@@ -102,10 +102,11 @@ fn HomePage() -> impl IntoView {
 #[component]
 fn PostPage() -> impl IntoView {
     let params = use_params_map();
-    let slug = move || params.read().get("slug").unwrap_or_default();
+    let series_slug = move || params.read().get("series").unwrap_or_default();
+    let post_slug = move || params.read().get("slug").unwrap_or_default();
 
     move || {
-        match find_post(&slug()) {
+        match find_post(&series_slug(), &post_slug()) {
         Some((series, post)) => view! {
             <article class="space-y-5 sm:space-y-6">
                 <Title text=post.title/>
@@ -153,12 +154,18 @@ mod tests {
     use super::*;
 
     #[test]
-    fn finds_known_post_by_slug() {
-        let found = find_post("introduction");
+    fn finds_known_post_by_series_and_slug() {
+        let found = find_post("building-and-understanding-a-harness", "introduction");
         assert!(found.is_some());
         assert_eq!(found.map(|(_, p)| p.title), Some("Introduction"));
-        assert!(find_post("skills").is_some());
-        assert!(find_post("non-existent").is_none());
+        assert!(
+            find_post(
+                "building-and-understanding-a-harness",
+                "skills-and-citations"
+            )
+            .is_some()
+        );
+        assert!(find_post("building-and-understanding-a-harness", "non-existent").is_none());
     }
 
     #[test]

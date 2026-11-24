@@ -1,4 +1,4 @@
-use crate::{Post, Series, site_url};
+use crate::{Post, Series, post_url};
 use leptos::prelude::*;
 use leptos_router::components::A;
 
@@ -28,7 +28,7 @@ pub fn TableOfContents(series: Series, post: Post) -> impl IntoView {
                     .map(|(idx, part)| {
                         let is_current = part.slug == post.slug;
                         let part_num = idx + 1;
-                        let href = site_url(&format!("/posts/{}", part.slug));
+                        let href = post_url(&series, part);
                         view! {
                             <li class="leading-snug">
                                 {if is_current {

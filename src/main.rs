@@ -52,9 +52,9 @@ async fn export_static_site(mut app: Router, site_root: &Path) -> Result<(), std
     )
     .await?;
 
-    for post in all_posts() {
-        let uri = format!("{BASE_PATH}/posts/{}", post.slug);
-        let out_dir = site_root.join("posts").join(post.slug);
+    for (series, post) in all_posts() {
+        let uri = format!("{BASE_PATH}/posts/{}/{}", series.slug, post.slug);
+        let out_dir = site_root.join("posts").join(series.slug).join(post.slug);
         std::fs::create_dir_all(&out_dir)?;
         render_to_file(&mut app, &uri, &out_dir.join("index.html")).await?;
     }

@@ -41,19 +41,27 @@ impl Series {
 pub const SERIES: &[Series] = &[harness::SERIES];
 
 #[must_use]
-pub fn all_posts() -> Vec<Post> {
+pub fn post_url(series: &Series, post: &Post) -> String {
+    crate::site_url(&format!("/posts/{}/{}", series.slug, post.slug))
+}
+
+#[must_use]
+pub fn all_posts() -> Vec<(Series, Post)> {
     SERIES
         .iter()
-        .flat_map(|series| series.posts.iter().copied())
+        .flat_map(|series| {
+            series
+                .posts
+                .iter()
+                .copied()
+                .map(move |post| (*series, post))
+        })
         .collect()
 }
 
 #[must_use]
-pub fn find_post(slug: &str) -> Option<(Series, Post)> {
-    for series in SERIES {
-        if let Some(post) = series.posts.iter().copied().find(|p| p.slug == slug) {
-            return Some((*series, post));
-        }
-    }
-    None
+pub fn find_post(series_slug: &str, post_slug: &str) -> Option<(Series, Post)> {
+    let series = SERIES.iter().copied().find(|s| s.slug == series_slug)?;
+    let post = series.posts.iter().copied().find(|p| p.slug == post_slug)?;
+    Some((series, post))
 }
