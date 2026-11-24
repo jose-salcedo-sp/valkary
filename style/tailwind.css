@@ -2,44 +2,44 @@
 
 @layer components {
   .markdown {
-    @apply space-y-4 text-sm leading-relaxed text-zinc-300;
+    @apply space-y-4 text-sm sm:text-base leading-relaxed text-zinc-300 wrap-break-word;
   }
   .markdown h1 {
-    @apply mt-6 text-2xl font-bold tracking-tight text-white first:mt-0;
+    @apply mt-5 sm:mt-6 text-xl sm:text-2xl font-bold tracking-tight text-white first:mt-0;
   }
   .markdown h2 {
-    @apply mt-6 text-xl font-semibold tracking-tight text-white first:mt-0;
+    @apply mt-5 sm:mt-6 text-lg sm:text-xl font-semibold tracking-tight text-white first:mt-0;
   }
   .markdown h3 {
-    @apply mt-4 text-lg font-semibold text-white;
+    @apply mt-4 text-base sm:text-lg font-semibold text-white;
   }
   .markdown ul {
-    @apply list-inside list-disc space-y-1;
+    @apply list-inside list-disc space-y-1.5 sm:space-y-1;
   }
   .markdown ol {
-    @apply list-inside list-decimal space-y-1;
+    @apply list-inside list-decimal space-y-1.5 sm:space-y-1;
   }
   .markdown code {
-    @apply rounded bg-zinc-800 px-1.5 py-0.5 font-mono text-xs text-red-300;
+    @apply break-all sm:break-normal rounded bg-zinc-800 px-1.5 py-0.5 font-mono text-xs sm:text-[13px] text-red-300;
   }
   .markdown pre {
-    @apply overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-950 p-4 font-mono text-xs text-zinc-200;
+    @apply overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-950 p-3 sm:p-4 font-mono text-xs sm:text-[13px] leading-relaxed text-zinc-200;
   }
   .markdown pre code {
-    @apply bg-transparent p-0 text-inherit;
+    @apply break-normal bg-transparent p-0 text-inherit;
   }
   .markdown blockquote {
-    @apply border-l-2 border-red-400 pl-4 italic text-zinc-400;
+    @apply border-l-2 border-red-400 pl-3 sm:pl-4 italic text-zinc-400;
   }
   .markdown a {
     @apply text-red-400 underline hover:text-red-300;
   }
   .markdown table {
-    @apply w-full border-collapse text-left text-xs;
+    @apply block w-full overflow-x-auto sm:table border-collapse text-left text-xs sm:text-sm;
   }
   .markdown th,
   .markdown td {
-    @apply border border-zinc-800 px-3 py-2;
+    @apply border border-zinc-800 px-2.5 py-1.5 sm:px-3 sm:py-2;
   }
   .markdown th {
     @apply bg-zinc-900 font-semibold text-white;

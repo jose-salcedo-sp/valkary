@@ -3,7 +3,7 @@ use leptos::prelude::*;
 #[component]
 pub fn Subtitle(title: &'static str, id: &'static str) -> impl IntoView {
     view! {
-        <h2 class="group text-2xl font-bold tracking-tight text-white" id=id>
+        <h2 class="group text-xl font-bold tracking-tight text-white sm:text-2xl" id=id>
             <a
                 href=format!("#{id}")
                 class="inline-block cursor-pointer underline decoration-transparent decoration-4 underline-offset-4 transition-colors duration-200 group-hover:decoration-red-400"

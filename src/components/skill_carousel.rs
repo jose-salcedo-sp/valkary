@@ -34,7 +34,7 @@ pub fn CopyButton(text: Signal<&'static str>) -> impl IntoView {
             type="button"
             aria-label="Copy markdown to clipboard"
             on:click=on_copy
-            class="inline-flex cursor-pointer items-center gap-1.5 rounded px-2 py-1 font-mono text-xs text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
+            class="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded px-2.5 py-1.5 font-mono text-xs text-zinc-400 transition hover:bg-zinc-800 hover:text-white sm:px-2 sm:py-1"
         >
             {move || {
                 if copied.get() {
@@ -105,12 +105,12 @@ pub fn SkillCarousel(
         Signal::derive(move || skills.get(active.get()).copied().unwrap_or(skills[0]).src);
 
     view! {
-        <div class="my-6 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50">
-            <div class="flex items-center justify-between border-b border-zinc-800 bg-zinc-900 px-2">
+        <div class="my-5 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50 sm:my-6">
+            <div class="flex flex-col border-b border-zinc-800 bg-zinc-900 sm:flex-row sm:items-center sm:justify-between">
                 <div
                     role="tablist"
                     aria-label="Skills"
-                    class="flex gap-1 overflow-x-auto py-1.5"
+                    class="flex gap-1 overflow-x-auto px-2 py-1.5"
                 >
                     {skills
                         .iter()
@@ -138,30 +138,32 @@ pub fn SkillCarousel(
                         .collect_view()}
                 </div>
 
-                <div class="ml-2 flex shrink-0 items-center gap-1 border-l border-zinc-800 pl-2">
+                <div class="flex shrink-0 items-center justify-between border-t border-zinc-800/80 px-2 py-1 sm:justify-end sm:gap-1 sm:border-t-0 sm:border-l sm:border-zinc-800 sm:py-1.5">
                     <CopyButton text=current_src/>
                     {(len > 1)
                         .then(|| {
                             view! {
-                                <button
-                                    type="button"
-                                    aria-label="Previous skill"
-                                    on:click=prev
-                                    class="cursor-pointer rounded px-2 py-1 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-white"
-                                >
-                                    "←"
-                                </button>
-                                <span class="font-mono text-xs text-zinc-500">
-                                    {move || format!("{}/{len}", active.get() + 1)}
-                                </span>
-                                <button
-                                    type="button"
-                                    aria-label="Next skill"
-                                    on:click=next
-                                    class="cursor-pointer rounded px-2 py-1 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-white"
-                                >
-                                    "→"
-                                </button>
+                                <div class="flex items-center gap-1">
+                                    <button
+                                        type="button"
+                                        aria-label="Previous skill"
+                                        on:click=prev
+                                        class="cursor-pointer rounded px-2.5 py-1 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-white sm:px-2"
+                                    >
+                                        "←"
+                                    </button>
+                                    <span class="font-mono text-xs text-zinc-500">
+                                        {move || format!("{}/{len}", active.get() + 1)}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        aria-label="Next skill"
+                                        on:click=next
+                                        class="cursor-pointer rounded px-2.5 py-1 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-white sm:px-2"
+                                    >
+                                        "→"
+                                    </button>
+                                </div>
                             }
                         })}
                 </div>
@@ -169,7 +171,7 @@ pub fn SkillCarousel(
 
             <div
                 role="tabpanel"
-                class="markdown p-6"
+                class="markdown p-4 sm:p-6"
                 inner_html=move || render_markdown(current_src.get(), show_frontmatter)
             />
         </div>

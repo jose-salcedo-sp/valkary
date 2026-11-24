@@ -51,10 +51,10 @@ pub fn App() -> impl IntoView {
     view! {
         <Title text="Blog"/>
         <Router base=BASE_PATH>
-            <div class="mx-auto max-w-2xl px-6 py-12">
-                <header class="mb-12 border-b border-zinc-800 pb-6">
+            <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+                <header class="mb-8 border-b border-zinc-800 pb-4 sm:mb-12 sm:pb-6">
                     <nav class="flex items-center justify-between">
-                        <A href=site_url("/") attr:class="text-xl font-semibold tracking-tight text-white hover:text-zinc-300">
+                        <A href=site_url("/") attr:class="text-lg font-semibold tracking-tight text-white hover:text-zinc-300 sm:text-xl">
                             "Pepe's Super Serious Blog"
                         </A>
                     </nav>
@@ -73,22 +73,22 @@ pub fn App() -> impl IntoView {
 #[component]
 fn HomePage() -> impl IntoView {
     view! {
-        <section class="space-y-8">
-            <h1 class="text-3xl font-bold tracking-tight text-white">"Is HMR Fast?"</h1>
-            <ul class="space-y-6">
+        <section class="space-y-6 sm:space-y-8">
+            <h1 class="text-2xl font-bold tracking-tight text-white sm:text-3xl">"Is HMR Fast?"</h1>
+            <ul class="space-y-4 sm:space-y-6">
                 {SERIES
                     .iter()
                     .filter_map(|series| series.posts.first().map(|first| (series, first)))
                     .map(|(series, first)| {
                         let href = site_url(&format!("/posts/{}", first.slug));
                         view! {
-                            <li class="rounded-lg border border-zinc-800 bg-zinc-900/50 p-6 transition hover:border-zinc-700">
+                            <li class="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4 transition hover:border-zinc-700 sm:p-6">
                                 <article class="space-y-2">
-                                    <h2 class="text-xl font-semibold text-white">
+                                    <h2 class="text-lg font-semibold text-white sm:text-xl">
                                         <A href=href attr:class="hover:underline">{series.title}</A>
                                     </h2>
-                                    <time class="block text-sm text-zinc-500">{first.date}</time>
-                                    <p class="text-zinc-300">{series.summary}</p>
+                                    <time class="block text-xs text-zinc-500 sm:text-sm">{first.date}</time>
+                                    <p class="text-sm text-zinc-300 sm:text-base">{series.summary}</p>
                                 </article>
                             </li>
                         }
@@ -104,14 +104,15 @@ fn PostPage() -> impl IntoView {
     let params = use_params_map();
     let slug = move || params.read().get("slug").unwrap_or_default();
 
-    move || match find_post(&slug()) {
+    move || {
+        match find_post(&slug()) {
         Some((series, post)) => view! {
-            <article class="space-y-6">
+            <article class="space-y-5 sm:space-y-6">
                 <Title text=post.title/>
                 <SeriesNav series=series post=post/>
                 <header class="space-y-2">
-                    <h1 class="text-3xl font-bold tracking-tight text-white">{post.title}</h1>
-                    <time class="block text-sm text-zinc-500">{post.date}</time>
+                    <h1 class="text-2xl font-bold tracking-tight text-white sm:text-3xl">{post.title}</h1>
+                    <time class="block text-xs text-zinc-500 sm:text-sm">{post.date}</time>
                 </header>
                 <TableOfContents series=series post=post/>
                 {(post.body)()}
@@ -137,6 +138,7 @@ fn PostPage() -> impl IntoView {
             </section>
         }
         .into_any(),
+    }
     }
 }
 

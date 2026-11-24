@@ -12,12 +12,12 @@ pub fn Markdown(
     let src_signal = Signal::derive(move || src);
 
     view! {
-        <div class="my-6 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50">
-            <div class="flex items-center justify-between border-b border-zinc-800 bg-zinc-900 px-4 py-1.5 font-mono text-xs text-zinc-400">
-                <span>{title.unwrap_or("SKILL.md")}</span>
+        <div class="my-5 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50 sm:my-6">
+            <div class="flex items-center justify-between gap-2 border-b border-zinc-800 bg-zinc-900 px-3 py-2 font-mono text-xs text-zinc-400 sm:px-4">
+                <span class="truncate">{title.unwrap_or("SKILL.md")}</span>
                 <CopyButton text=src_signal/>
             </div>
-            <div class="markdown p-6" inner_html=rendered/>
+            <div class="markdown p-4 sm:p-6" inner_html=rendered/>
         </div>
     }
 }

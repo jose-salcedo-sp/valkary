@@ -153,5 +153,6 @@ fn Overview() -> AnyView {
     view! {
         <Section title="Overview" id="overview"/>
         <Section title="Tech Stack" id="tech-stack"/>
-    }.into_any()
+    }
+    .into_any()
 }
