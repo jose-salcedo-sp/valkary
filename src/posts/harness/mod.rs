@@ -52,7 +52,7 @@ pub const SERIES: Series = Series {
     slug: "building-and-understanding-a-harness",
     title: "Building and Understanding an AI Harness",
     summary: "This is my first post on this blog, I am an AI enthusiast and I want to try and shed some light into how you can understand what your AI harness (Cursor, DeepSeek, etc.) is doing.",
-    posts: &[INTRO_POST, OVERVIEW_POST, SKILLS_POST],
+    posts: &[INTRO_POST, OVERVIEW_POST, SKILLS_AND_CITATIONS_POST],
 };
 
 pub const INTRO_POST: Post = Post {
@@ -73,12 +73,21 @@ pub const INTRO_POST: Post = Post {
     body: Introduction,
 };
 
-pub const SKILLS_POST: Post = Post {
-    slug: "skills",
-    title: "Skills",
+pub const SKILLS_AND_CITATIONS_POST: Post = Post {
+    slug: "skills-and-citations",
+    title: "Skills and Citations",
     date: "2026-11-24",
-    summary: "Skill used for this project",
-    sections: &[],
+    summary: "Skills and citations used for this project",
+    sections: &[
+        TocSection {
+            id: "skills",
+            title: "Skills",
+        },
+        TocSection {
+            id: "citations",
+            title: "Citations",
+        },
+    ],
     body: Skills,
 };
 
