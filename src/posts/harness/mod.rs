@@ -211,7 +211,7 @@ fn Overview() -> AnyView {
 
         <Section title="How?" id="how">
             <P>
-                "I will be writing a new `Part` in this series alongside each layer of the harness as I build the UI and backend server in public. All of the code will be open to clone, fork, star, contribute to, or poke around in — the harness lives at"
+                "I will be writing a new `Part` in this series alongside each layer of the harness as I build the UI and backend server in public. All of the code will be open to clone, fork, star, contribute to, or poke around in the harness lives at"
                 <Link href="https://github.com/jose-salcedo-sp/harness"/>
                 "and the source for this Leptos + Tailwind blog lives at"
                 <Link href="https://github.com/jose-salcedo-sp/valkary"/>
@@ -234,7 +234,7 @@ fn Overview() -> AnyView {
                 <Li>
                     "Axum"
                     <Link href="https://github.com/tokio-rs/axum"/>
-                    "for the backend server: handles the heavy lifting — streaming LLM responses, orchestrating the agent loop, managing conversation memory and traces, and executing tools and subagents"
+                    "for the backend server: handles the heavy lifting, streaming LLM responses, orchestrating the agent loop, managing conversation memory and traces, and executing tools and subagents"
                 </Li>
                 <Li>
                     "Tokio"
