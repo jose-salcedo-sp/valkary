@@ -10,6 +10,7 @@ crate-type = ["cdylib", "rlib"]
 leptos = "0.8"
 leptos_meta = "0.8"
 leptos_router = "0.8"
+pulldown-cmark = { version = "0.13", default-features = false, features = ["html"] }
 axum = { version = "0.8", optional = true }
 leptos_axum = { version = "0.8", optional = true }
 tokio = { version = "1", features = ["macros", "net", "rt-multi-thread"], optional = true }

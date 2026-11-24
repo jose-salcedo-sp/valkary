@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+@layer components {
+  .markdown {
+    @apply space-y-4 text-sm leading-relaxed text-zinc-300;
+  }
+  .markdown h1 {
+    @apply mt-6 text-2xl font-bold tracking-tight text-white first:mt-0;
+  }
+  .markdown h2 {
+    @apply mt-6 text-xl font-semibold tracking-tight text-white first:mt-0;
+  }
+  .markdown h3 {
+    @apply mt-4 text-lg font-semibold text-white;
+  }
+  .markdown ul {
+    @apply list-inside list-disc space-y-1;
+  }
+  .markdown ol {
+    @apply list-inside list-decimal space-y-1;
+  }
+  .markdown code {
+    @apply rounded bg-zinc-800 px-1.5 py-0.5 font-mono text-xs text-red-300;
+  }
+  .markdown pre {
+    @apply overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-950 p-4 font-mono text-xs text-zinc-200;
+  }
+  .markdown pre code {
+    @apply bg-transparent p-0 text-inherit;
+  }
+  .markdown blockquote {
+    @apply border-l-2 border-red-400 pl-4 italic text-zinc-400;
+  }
+  .markdown a {
+    @apply text-red-400 underline hover:text-red-300;
+  }
+  .markdown table {
+    @apply w-full border-collapse text-left text-xs;
+  }
+  .markdown th,
+  .markdown td {
+    @apply border border-zinc-800 px-3 py-2;
+  }
+  .markdown th {
+    @apply bg-zinc-900 font-semibold text-white;
+  }
+}

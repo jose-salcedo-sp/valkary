@@ -1,3 +1,11 @@
+pub mod components;
+pub mod posts;
+
+pub use components::{
+    Markdown, P, Section, SeriesNav, SkillCarousel, SkillTab, Subtitle, TableOfContents,
+};
+pub use posts::{Post, SERIES, Series, TocSection, all_posts, find_post};
+
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::{
@@ -7,15 +15,6 @@ use leptos_router::{
     path,
 };
 
-#[derive(Clone, Copy)]
-pub struct Post {
-    pub slug: &'static str,
-    pub title: &'static str,
-    pub date: &'static str,
-    pub summary: &'static str,
-    pub body: fn() -> AnyView,
-}
-
 pub const BASE_PATH: &str = match option_env!("SITE_BASE") {
     Some(base) => base,
     None => "",
@@ -24,52 +23,6 @@ pub const BASE_PATH: &str = match option_env!("SITE_BASE") {
 #[must_use]
 pub fn site_url(path: &str) -> String {
     format!("{BASE_PATH}{path}")
-}
-
-// ponytail: static slice in-memory; swap for markdown files / SQLite when post count grows
-pub const POSTS: &[Post] = &[Post {
-    slug: "building-and-understanding-a-harness",
-    title: "Building and Understanding an AI Harness",
-    date: "2026-11-24",
-    summary: "This is my first post on this blog, I am an AI enthusiast and I want to try and shed some light into how you can understand what your AI harness (Cursor, DeepSeek, etc.) is doing.",
-    body: HarnessPost,
-}];
-
-#[component]
-fn HarnessPost() -> AnyView {
-    view! {
-        <div class="space-y-4 leading-relaxed text-zinc-300">
-            <p>"I have been working using Cursor for most of my proffessional life (not really that long but still). I've become greatly interested in how these tools work, how do they interface with LLMs, what the hell a tool call is, skills, rules, etc. And I thought the best way to do this is to build one myself."</p>
-            <p>"The purpose of this post (and probably series) is to delve deep into implementing a personal AI harness. The troubles I run into and explaining how each individual core component works or connects with an actual LLM."</p>
-            <p>"So in the spirit of actually learning and transparency I will set myself up with some objectives and rules for the project."</p>
-
-            <h2 class="text-2xl font-bold tracking-tight text-white" id="objectives">"Objectives"</h2>
-            <ul class="list-disc list-inside">
-                <li>"Build a UI interface (preferrably pretty lol) to interact with my harness"</li>
-                <li>"Implementing a chat bot with conversation history and context (a cache we'll call agent memory)"</li>
-                <li>"Implementing a tool calling system and traces so we know what the hell is happening under the hood"</li>
-                <li>"Implementing agents and subagents with their own memory and rules (we'll call this personality)"</li>
-                <li>"Add skill and rule calling capabilities to the harness"</li>
-                <li>"Try to be performant and efficient with the use of memory and resources"</li>
-                <li>"Making something useful even if not for production use, but at least something really showcases what can be done"</li>
-            </ul>
-
-            <h2 class="text-2xl font-bold tracking-tight text-white" id="rules">"Rules"</h2>
-            <ul class="list-disc list-inside">
-                <li>"All of the code must be written in Rust"</li>
-                <li>"The blogpost are human written and not AI generated (unless it is to paraphrase or improve my writing)"</li>
-                <li>"The code will be written with AI in the most part but I will review it and keep it up to standard so I know what is actually going on while I implement the harness from scratch"</li>
-                <li>"Listing all my sources (including personal skills, notes, external blogposts and technical documentation) so I can reference them later"</li>
-                <li>"Using images and diagrams to help explain the code and concepts"</li>
-            </ul>
-        </div>
-    }
-    .into_any()
-}
-
-#[must_use]
-pub fn find_post(slug: &str) -> Option<Post> {
-    POSTS.iter().copied().find(|post| post.slug == slug)
 }
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
@@ -123,18 +76,19 @@ fn HomePage() -> impl IntoView {
         <section class="space-y-8">
             <h1 class="text-3xl font-bold tracking-tight text-white">"Is HMR Fast?"</h1>
             <ul class="space-y-6">
-                {POSTS
+                {SERIES
                     .iter()
-                    .map(|post| {
-                        let href = site_url(&format!("/posts/{}", post.slug));
+                    .filter_map(|series| series.posts.first().map(|first| (series, first)))
+                    .map(|(series, first)| {
+                        let href = site_url(&format!("/posts/{}", first.slug));
                         view! {
                             <li class="rounded-lg border border-zinc-800 bg-zinc-900/50 p-6 transition hover:border-zinc-700">
                                 <article class="space-y-2">
                                     <h2 class="text-xl font-semibold text-white">
-                                        <A href=href attr:class="hover:underline">{post.title}</A>
+                                        <A href=href attr:class="hover:underline">{series.title}</A>
                                     </h2>
-                                    <time class="block text-sm text-zinc-500">{post.date}</time>
-                                    <p class="text-zinc-300">{post.summary}</p>
+                                    <time class="block text-sm text-zinc-500">{first.date}</time>
+                                    <p class="text-zinc-300">{series.summary}</p>
                                 </article>
                             </li>
                         }
@@ -151,17 +105,24 @@ fn PostPage() -> impl IntoView {
     let slug = move || params.read().get("slug").unwrap_or_default();
 
     move || match find_post(&slug()) {
-        Some(post) => view! {
-            <article class="space-y-4">
+        Some((series, post)) => view! {
+            <article class="space-y-6">
                 <Title text=post.title/>
-                <h1 class="text-3xl font-bold tracking-tight text-white">{post.title}</h1>
-                <time class="block text-sm text-zinc-500">{post.date}</time>
+                <SeriesNav series=series post=post/>
+                <header class="space-y-2">
+                    <h1 class="text-3xl font-bold tracking-tight text-white">{post.title}</h1>
+                    <time class="block text-sm text-zinc-500">{post.date}</time>
+                </header>
+                <TableOfContents series=series post=post/>
                 {(post.body)()}
-                <p class="pt-4">
-                    <A href=site_url("/") attr:class="text-sm text-zinc-400 hover:text-white">
-                        "← Back to all posts"
-                    </A>
-                </p>
+                <div class="pt-6 space-y-6">
+                    <SeriesNav series=series post=post/>
+                    <p>
+                        <A href=site_url("/") attr:class="text-sm text-zinc-400 hover:text-white">
+                            "← Back to all posts"
+                        </A>
+                    </p>
+                </div>
             </article>
         }
         .into_any(),
@@ -191,12 +152,67 @@ mod tests {
 
     #[test]
     fn finds_known_post_by_slug() {
-        let post = find_post("building-and-understanding-a-harness");
-        assert!(post.is_some());
-        assert_eq!(
-            post.map(|p| p.title),
-            Some("Building and Understanding an AI Harness")
-        );
+        let found = find_post("introduction");
+        assert!(found.is_some());
+        assert_eq!(found.map(|(_, p)| p.title), Some("Introduction"));
+        assert!(find_post("skills").is_some());
         assert!(find_post("non-existent").is_none());
+    }
+
+    #[test]
+    fn resolves_previous_and_next_in_series() {
+        const PARTS: &[Post] = &[
+            Post {
+                slug: "part-1",
+                title: "Part 1",
+                date: "2026-11-24",
+                summary: "",
+                sections: &[],
+                body: posts::harness::INTRO_POST.body,
+            },
+            Post {
+                slug: "part-2",
+                title: "Part 2",
+                date: "2026-11-25",
+                summary: "",
+                sections: &[],
+                body: posts::harness::INTRO_POST.body,
+            },
+            Post {
+                slug: "part-3",
+                title: "Part 3",
+                date: "2026-11-26",
+                summary: "",
+                sections: &[],
+                body: posts::harness::INTRO_POST.body,
+            },
+        ];
+        let series = Series {
+            slug: "harness",
+            title: "Harness",
+            summary: "",
+            posts: PARTS,
+        };
+
+        let (prev_0, next_0) = series.neighbors("part-1");
+        assert!(prev_0.is_none());
+        assert_eq!(next_0.map(|p| p.slug), Some("part-2"));
+
+        let (prev_1, next_1) = series.neighbors("part-2");
+        assert_eq!(prev_1.map(|p| p.slug), Some("part-1"));
+        assert_eq!(next_1.map(|p| p.slug), Some("part-3"));
+
+        let (prev_2, next_2) = series.neighbors("part-3");
+        assert_eq!(prev_2.map(|p| p.slug), Some("part-2"));
+        assert!(next_2.is_none());
+    }
+
+    #[test]
+    fn renders_skill_markdown_with_frontmatter() {
+        let md = "---\nname: ponytail\ndescription: lazy mode\n---\n# Ponytail\n- rule 1\n";
+        let html = components::render_markdown(md, true);
+        assert!(html.contains("name: ponytail"));
+        assert!(html.contains("<h1>Ponytail</h1>"));
+        assert!(html.contains("<li>rule 1</li>"));
     }
 }

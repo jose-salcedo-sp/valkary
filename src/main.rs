@@ -3,7 +3,7 @@ use axum::{
     body::{Body, to_bytes},
     http::Request,
 };
-use blog::{App, BASE_PATH, POSTS, shell};
+use blog::{App, BASE_PATH, all_posts, shell};
 use leptos::prelude::*;
 use leptos_axum::{LeptosRoutes, generate_route_list};
 use std::path::Path;
@@ -52,7 +52,7 @@ async fn export_static_site(mut app: Router, site_root: &Path) -> Result<(), std
     )
     .await?;
 
-    for post in POSTS {
+    for post in all_posts() {
         let uri = format!("{BASE_PATH}/posts/{}", post.slug);
         let out_dir = site_root.join("posts").join(post.slug);
         std::fs::create_dir_all(&out_dir)?;
