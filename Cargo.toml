@@ -1,0 +1,43 @@
+[package]
+name = "blog"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+leptos = "0.8"
+leptos_meta = "0.8"
+leptos_router = "0.8"
+axum = { version = "0.8", optional = true }
+leptos_axum = { version = "0.8", optional = true }
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread"], optional = true }
+tower-service = { version = "0.3", optional = true }
+wasm-bindgen = { version = "0.2", optional = true }
+
+[features]
+# ponytail: default to ssr so plain `cargo check` / `cargo test` works directly through mbx
+default = ["ssr"]
+hydrate = ["leptos/hydrate", "dep:wasm-bindgen"]
+ssr = [
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "leptos_router/ssr",
+    "dep:axum",
+    "dep:leptos_axum",
+    "dep:tokio",
+    "dep:tower-service",
+]
+
+[package.metadata.leptos]
+output-name = "blog"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+tailwind-input-file = "style/tailwind.css"
+site-addr = "127.0.0.1:3000"
+reload-port = 3001
+bin-features = ["ssr"]
+bin-default-features = false
+lib-features = ["hydrate"]
+lib-default-features = false

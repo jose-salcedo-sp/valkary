@@ -1,0 +1,20 @@
+{
+  "tailwindCSS.experimental.configFile": "style/tailwind.css",
+  "tailwindCSS.includeLanguages": {
+    "rust": "html"
+  },
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "attr:class"
+  ],
+  "tailwindCSS.experimental.classRegex": [
+    "\\b(?:attr:)?class\\s*=\\s*\"([^\"]*)\"",
+    "\\bclass:\\s*([\\w\\-:/]+)"
+  ],
+  "[rust]": {
+    "editor.quickSuggestions": {
+      "strings": "on"
+    }
+  }
+}
