@@ -1,4 +1,4 @@
-use crate::{P, Post, Section, Series, SkillCarousel, SkillTab, TocSection};
+use crate::{Li, P, Post, Section, Series, SkillCarousel, SkillTab, TocSection, Ul};
 use leptos::prelude::*;
 
 const RUST_SKILLS: &[SkillTab] = &[
@@ -102,25 +102,25 @@ fn Introduction() -> AnyView {
             </div>
 
             <Section title="Objectives" id="objectives">
-                <ul class="list-disc list-inside">
-                    <li>"Build a UI interface (preferrably pretty lol) to interact with my harness"</li>
-                    <li>"Implementing a chat bot with conversation history and context (a cache we'll call agent memory)"</li>
-                    <li>"Implementing a tool calling system and traces so we know what the hell is happening under the hood"</li>
-                    <li>"Implementing agents and subagents with their own memory and rules (we'll call this personality)"</li>
-                    <li>"Add skill and rule calling capabilities to the harness"</li>
-                    <li>"Try to be performant and efficient with the use of memory and resources"</li>
-                    <li>"Making something useful even if not for production use, but at least something really showcases what can be done"</li>
-                </ul>
+                <Ul>
+                    <Li>"Build a UI interface (preferrably pretty lol) to interact with my harness"</Li>
+                    <Li>"Implementing a chat bot with conversation history and context (a cache we'll call agent memory)"</Li>
+                    <Li>"Implementing a tool calling system and traces so we know what the hell is happening under the hood"</Li>
+                    <Li>"Implementing agents and subagents with their own memory and rules (we'll call this personality)"</Li>
+                    <Li>"Add skill and rule calling capabilities to the harness"</Li>
+                    <Li>"Try to be performant and efficient with the use of memory and resources"</Li>
+                    <Li>"Making something useful even if not for production use, but at least something really showcases what can be done"</Li>
+                </Ul>
             </Section>
 
             <Section title="Rules" id="rules">
-                <ul class="list-disc list-inside">
-                    <li>"All of the code must be written in Rust"</li>
-                    <li>"The blogpost are human written and not AI generated (unless it is to paraphrase or improve my writing)"</li>
-                    <li>"The code will be written with AI in the most part but I will review it and keep it up to standard so I know what is actually going on while I implement the harness from scratch"</li>
-                    <li>"Listing all my sources (including personal skills, notes, external blogposts and technical documentation) so I can reference them later"</li>
-                    <li>"Using images and diagrams to help explain the code and concepts"</li>
-                </ul>
+                <Ul>
+                    <Li>"All of the code must be written in Rust"</Li>
+                    <Li>"The blogpost are human written and not AI generated (unless it is to paraphrase or improve my writing)"</Li>
+                    <Li>"The code will be written with AI in the most part but I will review it and keep it up to standard so I know what is actually going on while I implement the harness from scratch"</Li>
+                    <Li>"Listing all my sources (including personal skills, notes, external blogposts and technical documentation) so I can reference them later"</Li>
+                    <Li>"Using images and diagrams to help explain the code and concepts"</Li>
+                </Ul>
             </Section>
         </div>
     }

@@ -2,7 +2,7 @@ pub mod components;
 pub mod posts;
 
 pub use components::{
-    Markdown, P, Section, SeriesNav, SkillCarousel, SkillTab, Subtitle, TableOfContents,
+    Li, Markdown, P, Section, SeriesNav, SkillCarousel, SkillTab, Subtitle, TableOfContents, Ul,
 };
 pub use posts::{Post, SERIES, Series, TocSection, all_posts, find_post, post_url};
 
