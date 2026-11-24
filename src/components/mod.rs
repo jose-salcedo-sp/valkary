@@ -1,3 +1,4 @@
+mod link;
 mod list;
 mod markdown;
 mod paragraph;
@@ -7,6 +8,7 @@ mod skill_carousel;
 mod subtitle;
 mod toc;
 
+pub use link::{Link, default_link_meta};
 pub use list::{Li, Ul};
 pub use markdown::{Markdown, render_markdown};
 pub use paragraph::P;
