@@ -1,4 +1,4 @@
-use crate::components::skill_carousel::CopyButton;
+use crate::components::{mermaid::render_mermaid_container, skill_carousel::CopyButton};
 use leptos::prelude::*;
 use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag, TagEnd, html};
 
@@ -33,6 +33,7 @@ pub fn render_markdown(src: &str, show_frontmatter: bool) -> String {
     );
 
     let mut in_frontmatter = false;
+    let mut mermaid_buf: Option<String> = None;
     let parser = Parser::new_ext(src, opts).filter_map(|event| match event {
         Event::Start(Tag::MetadataBlock(_)) => {
             in_frontmatter = true;
@@ -45,6 +46,22 @@ pub fn render_markdown(src: &str, show_frontmatter: bool) -> String {
             show_frontmatter.then_some(Event::End(TagEnd::CodeBlock))
         }
         _ if in_frontmatter && !show_frontmatter => None,
+        Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(ref lang)))
+            if lang.split_whitespace().next() == Some("mermaid") =>
+        {
+            mermaid_buf = Some(String::new());
+            None
+        }
+        Event::Text(text) if mermaid_buf.is_some() => {
+            if let Some(buf) = &mut mermaid_buf {
+                buf.push_str(&text);
+            }
+            None
+        }
+        Event::End(TagEnd::CodeBlock) if mermaid_buf.is_some() => {
+            let diagram = mermaid_buf.take().unwrap_or_default();
+            Some(Event::Html(render_mermaid_container(&diagram).into()))
+        }
         other => Some(other),
     });
 

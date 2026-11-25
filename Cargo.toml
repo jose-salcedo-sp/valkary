@@ -17,6 +17,12 @@ tokio = { version = "1", features = ["macros", "net", "rt-multi-thread"], option
 tower-service = { version = "0.3", optional = true }
 wasm-bindgen = { version = "0.2", optional = true }
 
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+mermaid-rs-renderer = { version = "0.3.1", default-features = false }
+
+[build-dependencies]
+mermaid-rs-renderer = { version = "0.3.1", default-features = false }
+
 [features]
 # ponytail: default to ssr so plain `cargo check` / `cargo test` works directly through mbx
 default = ["ssr"]

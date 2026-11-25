@@ -26,6 +26,8 @@ async fn main() -> Result<(), std::io::Error> {
         .fallback(leptos_axum::file_and_error_handler(shell))
         .with_state(leptos_options);
 
+    let _ = copy_public_assets(Path::new("public"), Path::new(&site_root));
+
     if std::env::args().any(|arg| arg == "--export") {
         return export_static_site(app, Path::new(&site_root)).await;
     }
@@ -75,14 +77,23 @@ async fn export_static_site(mut app: Router, site_root: &Path) -> Result<(), std
 }
 
 fn copy_public_assets(public_dir: &Path, site_root: &Path) -> Result<(), std::io::Error> {
+    let pkg_dir = site_root.join("pkg");
+    let wasm = pkg_dir.join("blog.wasm");
+    let wasm_bg = pkg_dir.join("blog_bg.wasm");
+    if wasm.is_file() && !wasm_bg.exists() {
+        let _ = std::fs::copy(&wasm, &wasm_bg);
+    }
     if !public_dir.exists() {
         return Ok(());
     }
+    std::fs::create_dir_all(site_root)?;
     for entry in std::fs::read_dir(public_dir)? {
         let entry = entry?;
         let src_path = entry.path();
-        if src_path.is_file() {
-            let dest_path = site_root.join(entry.file_name());
+        let dest_path = site_root.join(entry.file_name());
+        if src_path.is_dir() {
+            copy_public_assets(&src_path, &dest_path)?;
+        } else if src_path.is_file() {
             std::fs::copy(&src_path, &dest_path)?;
         }
     }

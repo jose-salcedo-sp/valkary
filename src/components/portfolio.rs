@@ -166,11 +166,11 @@ pub fn HeroBackground() -> impl IntoView {
             aria-hidden="true"
             class="hero-rings-enter pointer-events-none absolute inset-0 flex items-center justify-center"
         >
-            <div class="absolute h-[160px] w-[160px] rounded-full border border-[#333333] animate-ping motion-reduce:animate-none sm:h-[200px] sm:w-[200px]"/>
-            <div class="absolute h-[220px] w-[220px] rounded-full border border-[#333333] animate-ping motion-reduce:animate-none sm:h-[300px] sm:w-[300px]"/>
-            <div class="absolute h-[280px] w-[280px] rounded-full border border-[#333333] animate-ping motion-reduce:animate-none sm:h-[425px] sm:w-[425px]"/>
-            <div class="absolute h-[330px] w-[330px] rounded-full border border-[#f43f5e] animate-pulse motion-reduce:animate-none sm:h-[550px] sm:w-[550px]"/>
-            <div class="absolute h-[390px] w-[390px] rounded-full border border-[#333333] animate-ping motion-reduce:animate-none sm:h-[625px] sm:w-[625px]"/>
+            <div class="absolute h-40 w-40 rounded-full border border-[#333333] animate-ping motion-reduce:animate-none sm:h-50 sm:w-50"/>
+            <div class="absolute h-55 w-55 rounded-full border border-[#333333] animate-ping motion-reduce:animate-none sm:h-75 sm:w-75"/>
+            <div class="absolute h-70 w-70 rounded-full border border-[#333333] animate-ping motion-reduce:animate-none sm:h-106.25 sm:w-106.25"/>
+            <div class="absolute h-82.5 w-82.5 rounded-full border border-[#f43f5e] animate-pulse motion-reduce:animate-none sm:h-137.5 sm:w-137.5"/>
+            <div class="absolute h-97.5 w-97.5 rounded-full border border-[#333333] animate-ping motion-reduce:animate-none sm:h-156.25 sm:w-156.25"/>
         </div>
     }
 }
@@ -204,7 +204,7 @@ pub fn HeroSection(#[prop(optional, into)] class: Option<String>) -> impl IntoVi
                     <p class="text-xs font-medium tracking-[10px] text-zinc-400 uppercase sm:text-sm">
                         "Software Engineer"
                     </p>
-                    <h1 class="min-h-[2.5rem] px-2 text-2xl font-semibold tracking-tight text-white sm:min-h-[3.5rem] sm:px-6 sm:text-4xl md:text-5xl">
+                    <h1 class="min-h-10 px-2 text-2xl font-semibold tracking-tight text-white sm:min-h-14 sm:px-6 sm:text-4xl md:text-5xl">
                         <Typewriter phrases=HERO_PHRASES/>
                     </h1>
                 </div>

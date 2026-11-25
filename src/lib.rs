@@ -1,13 +1,14 @@
 pub mod components;
-pub mod posts;
+pub mod series;
 
 pub use components::{
     ABOUT_PHRASES, AboutSection, BlogIndex, FEATURED_PROJECTS, FeaturedProject, HERO_PHRASES,
-    HeroBackground, HeroSection, Li, Link, Markdown, P, PhraseStyle, ProjectsSection, Section,
-    SeriesNav, SiteHeader, SkillCarousel, SkillTab, Subtitle, TableOfContents, Typewriter,
-    TypewriterPhase, TypewriterPhrase, TypewriterState, Ul, WritingSection,
+    HeroBackground, HeroSection, Li, Link, Markdown, Mermaid, P, PhraseStyle, ProjectsSection,
+    Quote, Section, SeriesNav, SiteHeader, SkillCarousel, SkillTab, Subtitle, TableOfContents,
+    Typewriter, TypewriterPhase, TypewriterPhrase, TypewriterState, Ul, WritingSection,
+    render_markdown, render_mermaid,
 };
-pub use posts::{Post, SERIES, Series, TocSection, all_posts, find_post, post_url};
+pub use series::{Post, SERIES, Series, TocSection, all_posts, find_post, post_url};
 
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
@@ -47,6 +48,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
                 <AutoReload options=options.clone()/>
                 <HydrationScripts options root=BASE_PATH/>
                 <MetaTags/>
+                <link rel="icon" type="image/svg+xml" href=site_url("/favicon.svg")/>
                 <Stylesheet id="leptos" href=site_url("/pkg/blog.css")/>
             </head>
             <body class="min-h-screen overflow-x-clip bg-zinc-950 text-zinc-100 antialiased">
@@ -91,8 +93,25 @@ fn HomePage() -> impl IntoView {
     }
 }
 
+#[cfg(feature = "hydrate")]
+#[wasm_bindgen::prelude::wasm_bindgen(inline_js = "
+export function scroll_to_top() {
+    if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+}
+")]
+extern "C" {
+    fn scroll_to_top();
+}
+
 #[component]
 fn BlogIndexPage() -> impl IntoView {
+    #[cfg(feature = "hydrate")]
+    Effect::new(move |_| {
+        scroll_to_top();
+    });
+
     view! {
         <Title text="Blog · Pepe Salcedo"/>
         <BlogIndex/>
@@ -104,6 +123,12 @@ fn PostPage() -> impl IntoView {
     let params = use_params_map();
     let series_slug = move || params.read().get("series").unwrap_or_default();
     let post_slug = move || params.read().get("slug").unwrap_or_default();
+
+    #[cfg(feature = "hydrate")]
+    Effect::new(move |_| {
+        let _ = (series_slug(), post_slug());
+        scroll_to_top();
+    });
 
     move || {
         match find_post(&series_slug(), &post_slug()) {
@@ -177,7 +202,7 @@ mod tests {
                 date: "2026-11-24",
                 summary: "",
                 sections: &[],
-                body: posts::harness::INTRO_POST.body,
+                body: series::harness::INTRO_POST.body,
             },
             Post {
                 slug: "part-2",
@@ -185,7 +210,7 @@ mod tests {
                 date: "2026-11-25",
                 summary: "",
                 sections: &[],
-                body: posts::harness::INTRO_POST.body,
+                body: series::harness::INTRO_POST.body,
             },
             Post {
                 slug: "part-3",
@@ -193,7 +218,7 @@ mod tests {
                 date: "2026-11-26",
                 summary: "",
                 sections: &[],
-                body: posts::harness::INTRO_POST.body,
+                body: series::harness::INTRO_POST.body,
             },
         ];
         let series = Series {
@@ -238,7 +263,7 @@ mod tests {
         );
 
         let all = all_posts();
-        assert_eq!(all.len(), 3);
+        assert_eq!(all.len(), 4);
         let (series, first) = all[0];
         assert_eq!(
             post_url(&series, &first),
@@ -306,11 +331,13 @@ mod tests {
 
     #[test]
     fn portfolio_and_about_phrases_are_configured() {
-        assert_eq!(HERO_PHRASES.len(), 3);
+        assert_eq!(HERO_PHRASES.len(), 4);
         assert_eq!(HERO_PHRASES[0].text, "Welcome to my portfolio!");
         assert_eq!(HERO_PHRASES[1].text, "I'm Pepe Salcedo");
-        assert_eq!(HERO_PHRASES[2].text, "Systems_&_AI");
+        assert_eq!(HERO_PHRASES[2].text, "Agentic_Systems");
         assert_eq!(HERO_PHRASES[2].style, PhraseStyle::CodeTag);
+        assert_eq!(HERO_PHRASES[3].text, "AI_&_Provenance");
+        assert_eq!(HERO_PHRASES[3].style, PhraseStyle::CodeTag);
 
         assert_eq!(ABOUT_PHRASES.len(), 3);
         assert_eq!(ABOUT_PHRASES[0].text, "architecting");
@@ -409,5 +436,58 @@ mod tests {
         assert!(writing_html.contains("Technical Series &amp; Notes"));
         assert!(writing_html.contains("All blog posts →"));
         assert!(!writing_html.contains(">Writing<"));
+
+        let quote_plain =
+            view! { <Quote>"Simplicity is prerequisite for reliability."</Quote> }.to_html();
+        assert!(quote_plain.contains("<blockquote"));
+        assert!(quote_plain.contains("border-l-2 border-red-400"));
+        assert!(quote_plain.contains("Simplicity is prerequisite for reliability."));
+        assert!(!quote_plain.contains("<footer"));
+
+        let quote_cited = view! {
+            <Quote cite="— Edsger W. Dijkstra" class="my-4">
+                "Testing shows the presence, not the absence of bugs."
+            </Quote>
+        }
+        .to_html();
+        assert!(quote_cited.contains("my-4"));
+        assert!(quote_cited.contains("Testing shows the presence, not the absence of bugs."));
+        assert!(quote_cited.contains("<footer"));
+        assert!(quote_cited.contains("— Edsger W. Dijkstra"));
+
+        let mermaid_html = view! {
+            <Mermaid
+                src="flowchart LR\n    Model[LLM] --> Harness[Harness]\n    Harness --> Model"
+                class="my-8"
+            />
+        }
+        .to_html();
+        assert!(mermaid_html.contains("my-8"));
+        assert!(mermaid_html.contains("<svg"));
+        assert!(mermaid_html.contains("#09090b"));
+        assert!(mermaid_html.contains("#18181b"));
+        assert!(mermaid_html.contains("#f87171"));
+
+        let invalid_mermaid = render_mermaid("not a valid diagram %%%");
+        assert!(invalid_mermaid.contains("<pre><code class=\"language-mermaid\">"));
+        assert!(invalid_mermaid.contains("not a valid diagram %%%"));
+
+        let md_mermaid = render_markdown(
+            "Before\n\n```mermaid\nflowchart TD\n    A[Start] --> B[End]\n```\n\nAfter",
+            false,
+        );
+        assert!(md_mermaid.contains("<svg"));
+        assert!(md_mermaid.contains("#09090b"));
+        assert!(md_mermaid.contains("#f87171"));
+        assert!(!md_mermaid.contains("<code class=\"language-mermaid\">"));
+
+        let (_, post) = find_post("building-and-understanding-a-harness", "architecture")
+            .expect("architecture post should exist");
+        let arch_html = (post.body)().to_html();
+        assert!(arch_html.contains("<svg"));
+        assert!(arch_html.contains("Send prompt"));
+        assert!(arch_html.contains("read_file(path)"));
+        assert!(arch_html.contains("Was the question"));
+        assert!(!arch_html.contains("<code class=\"language-mermaid\">"));
     }
 }

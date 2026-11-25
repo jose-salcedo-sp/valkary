@@ -31,6 +31,12 @@ Concise, high-signal conventions for the `blog` repository (Leptos 0.8 + Axum + 
 - **Component Organization (`src/components/`)**:
   - One focused module per component in `src/components/`, re-exported cleanly through `src/components/mod.rs` and `src/lib.rs`.
   - Accept optional styling overrides via `#[prop(optional, into)] class: Option<String>` merged onto a `BASE_CLASS` constant.
+  - **Diagrams (`<Mermaid>`)**: Render Mermaid diagrams via `<Mermaid src="..." class=.../>` or ` ```mermaid ` fenced blocks inside `<Markdown>` / `render_markdown`. Both use `mermaid-rs-renderer` (`default-features = false`) with a custom dark zinc + `red-400` theme (`#09090b` canvas, `#18181b` fills, `#3f3f46` / `#52525b` borders, `#f4f4f5` text, `#f87171` edges) and fall back to `<pre><code class="language-mermaid">` on invalid syntax without panicking.
+- **Series & Post Organization (`src/series/`)**:
+  - Domain registry lives in `src/series/mod.rs` (`Series`, `Post`, `TocSection`, `SERIES`, `all_posts`, `find_post`, `post_url`) and is re-exported from `src/lib.rs`.
+  - Each series has its own submodule directory `src/series/<series_name>/` with a concise `mod.rs` that defines `pub const SERIES: Series` and declares `pub mod posts;`.
+  - Individual posts within a series live in separate files under `src/series/<series_name>/posts/<post_name>.rs` and are re-exported through `src/series/<series_name>/posts/mod.rs`.
+  - Series-scoped assets (such as embedded markdown files under `src/series/<series_name>/skills/`) stay inside their series directory and are referenced via `include_str!("../skills/...")` from post modules.
 - **SSR + Hydrate Feature Parity**:
   - Default Cargo feature is `ssr` so `cargo test` and `cargo clippy` work out of the box; WASM builds use `--no-default-features --features hydrate`.
   - Gate browser-only APIs (`wasm_bindgen`, `window`, `sessionStorage`, `navigator.clipboard`) behind `#[cfg(feature = "hydrate")]` and provide clean no-op or fallback paths under `#[cfg(not(feature = "hydrate"))]`.

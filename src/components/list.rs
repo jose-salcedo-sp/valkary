@@ -1,6 +1,7 @@
 use leptos::prelude::*;
 
-const UL_BASE_CLASS: &str = "list-disc list-inside space-y-2 sm:space-y-1.5 text-base sm:text-lg leading-relaxed text-zinc-300";
+const UL_BASE_CLASS: &str =
+    "list-disc pl-5 space-y-2 sm:space-y-1.5 text-base sm:text-lg leading-relaxed text-zinc-300";
 const LI_BASE_CLASS: &str = "leading-relaxed text-zinc-300";
 
 #[component]

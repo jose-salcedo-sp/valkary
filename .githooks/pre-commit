@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+root=$(git rev-parse --show-toplevel)
+
+cargo run --quiet --manifest-path "$root/tools/link-cache/Cargo.toml"
+git add \
+  "$root/tools/link-cache/cache.json" \
+  "$root/src/components/link_metadata.rs" \
+  "$root/public/favicons"
