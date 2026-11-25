@@ -1,0 +1,66 @@
+{
+  "pages": {
+    "https://arxiv.org/html/2609.00006v1": {
+      "title": "Harness Engineering:Anatomy, Architecture, and Evolution of Coding AgentsA Source-Code Study of Eleven Systems"
+    },
+    "https://github.com/jose-salcedo-sp/harness": {
+      "title": "GitHub - jose-salcedo-sp/harness: Personal AI agent harness built from scratch in Rust with GPUI · GitHub"
+    },
+    "https://github.com/jose-salcedo-sp/valkary": {
+      "title": "GitHub - jose-salcedo-sp/valkary · GitHub"
+    },
+    "https://github.com/longbridge/gpui-component": {
+      "title": "GitHub - longbridge/gpui-kit: Rust GUI components for building fantastic cross-platform desktop application by using GPUI. · GitHub"
+    },
+    "https://github.com/seanmonstar/reqwest": {
+      "title": "GitHub - seanmonstar/reqwest: An easy and powerful Rust HTTP Client · GitHub"
+    },
+    "https://github.com/tokio-rs/axum": {
+      "title": "GitHub - tokio-rs/axum: HTTP routing and request-handling library for Rust that focuses on ergonomics and modularity · GitHub"
+    },
+    "https://leptos.dev/": {
+      "title": "Home - Leptos"
+    },
+    "https://rust-lang.github.io/api-guidelines/": {
+      "title": "About - Rust API Guidelines"
+    },
+    "https://serde.rs/": {
+      "title": "Overview · Serde"
+    },
+    "https://tokio.rs/": {
+      "title": "Tokio - An asynchronous Rust runtime"
+    },
+    "https://www.gpui.rs/": {
+      "title": "GPUI"
+    },
+    "https://www.langchain.com/blog/the-anatomy-of-an-agent-harness": {
+      "title": "The Anatomy of an Agent Harness"
+    }
+  },
+  "sites": {
+    "https://arxiv.org": {
+      "icon_path": "/favicons/arxiv-org-f7a436a39e.png"
+    },
+    "https://github.com": {
+      "icon_path": "/favicons/github-com-996e1f714b.png"
+    },
+    "https://leptos.dev": {
+      "icon_path": "/favicons/leptos-dev-f585ea8e22.ico"
+    },
+    "https://rust-lang.github.io": {
+      "icon_path": "/favicons/rust-lang-github-io-840dff5263.svg"
+    },
+    "https://serde.rs": {
+      "icon_path": "/favicons/serde-rs-bf22909e57.ico"
+    },
+    "https://tokio.rs": {
+      "icon_path": "/favicons/tokio-rs-0783d5cf8c.png"
+    },
+    "https://www.gpui.rs": {
+      "icon_path": "/favicons/www-gpui-rs-e02e5ca185.svg"
+    },
+    "https://www.langchain.com": {
+      "icon_path": "/favicons/www-langchain-com-607caad9ae.png"
+    }
+  }
+}
