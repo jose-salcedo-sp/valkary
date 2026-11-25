@@ -35,6 +35,7 @@ ssr = [
 output-name = "blog"
 site-root = "target/site"
 site-pkg-dir = "pkg"
+assets-dir = "public"
 tailwind-input-file = "style/tailwind.css"
 site-addr = "127.0.0.1:3000"
 reload-port = 3001

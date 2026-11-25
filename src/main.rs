@@ -38,6 +38,7 @@ async fn main() -> Result<(), std::io::Error> {
 async fn export_static_site(mut app: Router, site_root: &Path) -> Result<(), std::io::Error> {
     std::fs::create_dir_all(site_root)?;
     std::fs::write(site_root.join(".nojekyll"), "")?;
+    copy_public_assets(Path::new("public"), site_root)?;
 
     let root_uri = if BASE_PATH.is_empty() {
         "/".to_string()
@@ -45,6 +46,16 @@ async fn export_static_site(mut app: Router, site_root: &Path) -> Result<(), std
         format!("{BASE_PATH}/")
     };
     render_to_file(&mut app, &root_uri, &site_root.join("index.html")).await?;
+
+    let blog_dir = site_root.join("blog");
+    std::fs::create_dir_all(&blog_dir)?;
+    render_to_file(
+        &mut app,
+        &format!("{BASE_PATH}/blog"),
+        &blog_dir.join("index.html"),
+    )
+    .await?;
+
     render_to_file(
         &mut app,
         &format!("{BASE_PATH}/404"),
@@ -60,6 +71,21 @@ async fn export_static_site(mut app: Router, site_root: &Path) -> Result<(), std
     }
 
     println!("exported static site to {}", site_root.display());
+    Ok(())
+}
+
+fn copy_public_assets(public_dir: &Path, site_root: &Path) -> Result<(), std::io::Error> {
+    if !public_dir.exists() {
+        return Ok(());
+    }
+    for entry in std::fs::read_dir(public_dir)? {
+        let entry = entry?;
+        let src_path = entry.path();
+        if src_path.is_file() {
+            let dest_path = site_root.join(entry.file_name());
+            std::fs::copy(&src_path, &dest_path)?;
+        }
+    }
     Ok(())
 }
 

@@ -1,5 +1,59 @@
 @import "tailwindcss";
 
+@keyframes hero-rings-scale {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(2);
+  }
+  50% {
+    transform: scale(2);
+  }
+  75% {
+    transform: scale(3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-rings-opacity {
+  0% {
+    opacity: 0.1;
+  }
+  16.67% {
+    opacity: 0.2;
+  }
+  33.33% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  66.67% {
+    opacity: 0.8;
+  }
+  83.33% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.hero-rings-enter {
+  animation:
+    hero-rings-scale 2.5s ease-in-out both,
+    hero-rings-opacity 2.5s ease-in-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rings-enter {
+    animation: none;
+  }
+}
+
 @layer components {
   .markdown {
     @apply space-y-4 text-sm sm:text-base leading-relaxed text-zinc-300 wrap-break-word;
