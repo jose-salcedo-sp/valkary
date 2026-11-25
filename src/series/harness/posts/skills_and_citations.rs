@@ -79,30 +79,31 @@ fn Skills() -> AnyView {
             <P>"Core references, libraries, and documentation used across this series:"</P>
             <Ul>
                 <Li>
-                    "Rust API Guidelines:"
-                    <Link href="https://rust-lang.github.io/api-guidelines/"/>
+                    <Link href="https://rust-lang.github.io/api-guidelines/" title="Rust API Guidelines" />
                 </Li>
                 <Li>
-                    "GPUI (Zed's GPU-accelerated UI framework):"
-                    <Link href="https://www.gpui.rs/"/>
+                    <Link href="https://www.gpui.rs/" title="GPUI" />
                 </Li>
                 <Li>
-                    "GPUI Component Kit:"
-                    <Link href="https://github.com/longbridge/gpui-component"/>
+                    <Link href="https://github.com/longbridge/gpui-component" title="GPUI Component Kit" />
                 </Li>
                 <Li>
-                    "Axum web framework:"
-                    <Link href="https://github.com/tokio-rs/axum"/>
+                    <Link href="https://github.com/tokio-rs/axum" title="Axum" />
                 </Li>
                 <Li>
-                    "Leptos full-stack Rust framework (powering this blog):"
-                    <Link href="https://leptos.dev/"/>
+                    <Link href="https://leptos.dev/" title="Leptos full-stack Rust framework (powering this blog)" />
                 </Li>
                 <Li>
                     <Link href="https://arxiv.org/html/2609.00006v1" title="Harness Engineering: Anatomy, Architecture, and Evolution of Coding Agents -- A Source-Code Study of Eleven Systems" />
                 </Li>
                 <Li>
                     <Link href="https://www.langchain.com/blog/the-anatomy-of-an-agent-harness" title="The Anatomy of an Agent Harness" />
+                </Li>
+                <Li>
+                    <Link href="https://prismml.com/news/bonsai-2-family" title="Bonsai 2 family" />
+                </Li>
+                <Li>
+                    <Link href="https://prismml.mintlify.app/models/bonsai-2-9b" title="Quickstart guide for Bonsai 2 9B" />
                 </Li>
             </Ul>
         </Section>

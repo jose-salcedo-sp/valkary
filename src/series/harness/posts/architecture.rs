@@ -1,4 +1,4 @@
-use crate::{Li, Mermaid, P, Post, Quote, Section, TocSection, Ul};
+use crate::{Li, Link, Mermaid, P, Post, Quote, Section, TocSection, Ul};
 use leptos::prelude::*;
 
 const AGENT_LOOP_DIAGRAM: &str = r#"sequenceDiagram
@@ -62,6 +62,19 @@ is the architectural backbone of every SWE agent."
                 <P>"So this will be our very first task and layer. We will be coming back to this layer a lot so it is good we start getting familiar with it now. So let's start with the most basic agent loop we can think of. And I can think of no better than a chatbot with the ability to read files (tool call) to answer a user's prompt. The gist of it is that the agent will read the file, parse it, and answer the user's prompt based on the contents of the file."</P>
 
                 <Mermaid src=AGENT_LOOP_DIAGRAM/>
+            </Section>
+
+            <Section title="Architecture" id="architecture">
+                <P>"Now that we have a basic understanding of the agent loop, we can start to think about the architecture of the harness. We will implement the UI and minimal agent loop with the following \"architecture\" (it's not really an architecture yet, just a proof of concept):"</P>
+
+                <Ul>
+                    <Li>"GPUI chatbot app frontend"</Li>
+                    <Li>"Rust backend with a minimal agent loop"</Li>
+                    <Li>
+                        <Link href="https://prismml.com/news/bonsai-2-family" title="Bonsai 2 9B" />
+                        " model hosted locally"
+                    </Li>
+                </Ul>
             </Section>
         </div>
     }

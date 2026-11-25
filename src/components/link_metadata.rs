@@ -36,6 +36,14 @@ pub(super) fn find(href: &str) -> Option<LinkMetadata> {
             title: "Home - Leptos",
             icon_path: "/favicons/leptos-dev-f585ea8e22.ico",
         }),
+        "https://prismml.com/news/bonsai-2-family" => Some(LinkMetadata {
+            title: "PrismML — Introducing Ternary Bonsai 2 2B, 4B, and 9B: Bringing Local Agents to Everyday Devices",
+            icon_path: "/favicons/prismml-com-ff153353c1.png",
+        }),
+        "https://prismml.mintlify.app/models/bonsai-2-9b" => Some(LinkMetadata {
+            title: "Ternary Bonsai 2 9B - Bonsai",
+            icon_path: "/favicons/prismml-mintlify-app-a5a41ebb69.svg",
+        }),
         "https://rust-lang.github.io/api-guidelines/" => Some(LinkMetadata {
             title: "About - Rust API Guidelines",
             icon_path: "/favicons/rust-lang-github-io-840dff5263.svg",
