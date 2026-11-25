@@ -15,6 +15,10 @@ const RUST_SKILLS: &[SkillTab] = &[
         src: include_str!("../skills/rust-ownership.md"),
     },
     SkillTab {
+        title: "rust-state-machines",
+        src: include_str!("../skills/rust-state-machines.md"),
+    },
+    SkillTab {
         title: "rust-errors",
         src: include_str!("../skills/rust-errors.md"),
     },

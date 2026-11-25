@@ -1,10 +1,10 @@
 ---
 name: rust-patterns
 description: >-
-  Router for idiomatic Rust: invalid states, ownership, eros error sets,
-  traits, builders, iterators, concurrency, unsafe, module layout, and
-  port-and-adapter testing, plus the shared done check. Use when writing,
-  reviewing, or refactoring Rust.
+  Router for idiomatic Rust: invalid states, finite-state machines, ownership,
+  eros error sets, traits, builders, iterators, concurrency, unsafe, module
+  layout, and port-and-adapter testing, plus the shared done check. Use when
+  writing, reviewing, or refactoring Rust.
 ---
 
 # Rust patterns
@@ -21,6 +21,7 @@ Read each skill below whose trigger matches the work, and apply its rules and it
 | Skill | Read it when |
 | --- | --- |
 | [`rust-invalid-states`](../rust-invalid-states/SKILL.md) | A domain type, enum, `bool` or `Option` flag, newtype, typestate, or parse boundary is added or changed |
+| [`rust-state-machines`](../rust-state-machines/SKILL.md) | A workflow, lifecycle, pipeline, state machine, transition, or state-dependent API is added or changed |
 | [`rust-ownership`](../rust-ownership/SKILL.md) | A signature chooses between borrowing and owning, or code clones or uses `Cow` |
 | [`rust-errors`](../rust-errors/SKILL.md) | A function is fallible, or code adds error types, context, `unwrap`, or `expect` |
 | [`rust-traits-generics`](../rust-traits-generics/SKILL.md) | Code defines a trait, a generic function, a `dyn` object, or a conversion |
