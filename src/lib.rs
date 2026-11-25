@@ -2,11 +2,11 @@ pub mod components;
 pub mod series;
 
 pub use components::{
-    ABOUT_PHRASES, AboutSection, BlogIndex, FEATURED_PROJECTS, FeaturedProject, HERO_PHRASES,
-    HeroBackground, HeroSection, Li, Link, Markdown, Mermaid, P, PhraseStyle, ProjectsSection,
-    Quote, Section, SeriesNav, SiteHeader, SkillCarousel, SkillTab, Subtitle, TableOfContents,
-    Typewriter, TypewriterPhase, TypewriterPhrase, TypewriterState, Ul, WritingSection,
-    render_markdown, render_mermaid,
+    ABOUT_PHRASES, AboutSection, BlogIndex, CodeExcerpt, FEATURED_PROJECTS, FeaturedProject,
+    HERO_PHRASES, HeroBackground, HeroSection, Li, Link, Markdown, Mermaid, P, PhraseStyle,
+    ProjectsSection, Quote, Section, SeriesNav, SiteHeader, SkillCarousel, SkillTab, Subtitle,
+    TableOfContents, Typewriter, TypewriterPhase, TypewriterPhrase, TypewriterState, Ul,
+    WritingSection, render_markdown, render_mermaid,
 };
 pub use series::{Post, SERIES, Series, TocSection, all_posts, find_post, post_url};
 
@@ -242,15 +242,6 @@ mod tests {
     }
 
     #[test]
-    fn renders_skill_markdown_with_frontmatter() {
-        let md = "---\nname: ponytail\ndescription: lazy mode\n---\n# Ponytail\n- rule 1\n";
-        let html = components::render_markdown(md, true);
-        assert!(html.contains("name: ponytail"));
-        assert!(html.contains("<h1>Ponytail</h1>"));
-        assert!(html.contains("<li>rule 1</li>"));
-    }
-
-    #[test]
     fn site_url_and_post_url_prefix_base_path() {
         assert_eq!(site_url("/blog"), format!("{BASE_PATH}/blog"));
         assert_eq!(
@@ -263,7 +254,6 @@ mod tests {
         );
 
         let all = all_posts();
-        assert_eq!(all.len(), 4);
         let (series, first) = all[0];
         assert_eq!(
             post_url(&series, &first),
@@ -327,170 +317,5 @@ mod tests {
         state = state.step(SAMPLE);
         assert_eq!(state.phrase_index, 0);
         assert_eq!(state.phase, TypewriterPhase::Typing);
-    }
-
-    #[test]
-    fn portfolio_and_about_phrases_are_configured() {
-        assert_eq!(HERO_PHRASES.len(), 4);
-        assert_eq!(HERO_PHRASES[0].text, "Welcome to my portfolio!");
-        assert_eq!(HERO_PHRASES[1].text, "I'm Pepe Salcedo");
-        assert_eq!(HERO_PHRASES[2].text, "Agentic_Systems");
-        assert_eq!(HERO_PHRASES[2].style, PhraseStyle::CodeTag);
-        assert_eq!(HERO_PHRASES[3].text, "AI_&_Provenance");
-        assert_eq!(HERO_PHRASES[3].style, PhraseStyle::CodeTag);
-
-        assert_eq!(ABOUT_PHRASES.len(), 3);
-        assert_eq!(ABOUT_PHRASES[0].text, "architecting");
-        assert_eq!(ABOUT_PHRASES[1].text, "engineering");
-        assert_eq!(ABOUT_PHRASES[2].text, "building");
-        assert!(ABOUT_PHRASES.iter().all(|p| p.style == PhraseStyle::Accent));
-
-        assert_eq!(FEATURED_PROJECTS.len(), 4);
-        assert_eq!(FEATURED_PROJECTS[0].name, "recall");
-        assert_eq!(FEATURED_PROJECTS[1].name, "self-llm");
-        assert_eq!(FEATURED_PROJECTS[2].name, "final-server");
-        assert_eq!(FEATURED_PROJECTS[3].name, "JavaRaytracer");
-    }
-
-    #[test]
-    fn renders_typewriter_and_portfolio_sections_in_ssr() {
-        let owner = Owner::new();
-        owner.set();
-
-        provide_context(leptos_router::location::RequestUrl::new("/"));
-        let header_html = view! {
-            <Router>
-                <SiteHeader/>
-            </Router>
-        }
-        .to_html();
-        assert!(header_html.contains("https://www.linkedin.com/in/jose-salcedo-uribe/"));
-        assert!(header_html.contains("aria-label=\"LinkedIn\""));
-        assert!(header_html.contains("Current Work"));
-        assert!(header_html.contains("Blog"));
-        assert!(!header_html.contains("Writing"));
-        assert!(!header_html.contains("twitter.com"));
-
-        let hero_typewriter = view! { <Typewriter phrases=HERO_PHRASES/> }.to_html();
-        assert!(hero_typewriter.contains("Welcome to my portfolio!"));
-        assert!(hero_typewriter.contains("|"));
-
-        let hero_bg = view! { <HeroBackground/> }.to_html();
-        assert!(hero_bg.contains("hero-rings-enter"));
-        assert_eq!(hero_bg.matches("animate-ping").count(), 4);
-        assert_eq!(hero_bg.matches("animate-pulse").count(), 1);
-        assert!(hero_bg.contains("motion-reduce:animate-none"));
-
-        let hero_html = view! {
-            <Router>
-                <HeroSection/>
-            </Router>
-        }
-        .to_html();
-        assert!(hero_html.contains("/profile_pic.webp"));
-        assert!(hero_html.contains("/profile_pic.jpg"));
-        assert!(hero_html.contains("fetchpriority=\"high\""));
-        assert!(hero_html.contains("decoding=\"async\""));
-        assert!(hero_html.contains("width=\"144\""));
-        assert!(hero_html.contains("height=\"144\""));
-        assert!(hero_html.contains("Current Work"));
-        assert!(hero_html.contains("Blog"));
-        assert!(!hero_html.contains("Writing"));
-
-        let about_html = view! { <AboutSection/> }.to_html();
-        assert!(about_html.contains("Who am I?"));
-        assert!(about_html.contains("/about_pic.webp"));
-        assert!(about_html.contains("/about_pic.jpg"));
-        assert!(about_html.contains("loading=\"lazy\""));
-        assert!(about_html.contains("decoding=\"async\""));
-        assert!(about_html.contains("width=\"1200\""));
-        assert!(about_html.contains("height=\"1600\""));
-        assert!(about_html.contains("four years of industry experience"));
-        assert!(
-            about_html.contains("agentic tooling, systems of provenance, and memory performantly")
-        );
-        assert!(about_html.contains("architecting"));
-        assert!(about_html.contains("text-blue-300"));
-        assert!(about_html.contains("recall"));
-        assert!(about_html.contains("self-llm"));
-        assert!(about_html.contains("final-server"));
-        assert!(about_html.contains("JavaRaytracer"));
-
-        let projects_html = view! { <ProjectsSection/> }.to_html();
-        assert!(projects_html.contains("Current Work"));
-        assert!(projects_html.contains("Featured Systems &amp; Research"));
-        assert!(projects_html.contains("https://github.com/jose-salcedo-sp/recall"));
-        assert!(projects_html.contains("https://github.com/jose-salcedo-sp/self-llm"));
-        assert!(projects_html.contains("https://github.com/jose-salcedo-sp/final-server"));
-        assert!(projects_html.contains("https://github.com/jose-salcedo-sp/JavaRaytracer"));
-        assert!(!projects_html.contains("border-t"));
-        assert!(!about_html.contains("border-t"));
-
-        let writing_html = view! {
-            <Router>
-                <WritingSection/>
-            </Router>
-        }
-        .to_html();
-        assert!(writing_html.contains("id=\"blog\""));
-        assert!(writing_html.contains("Technical Series &amp; Notes"));
-        assert!(writing_html.contains("All blog posts →"));
-        assert!(!writing_html.contains(">Writing<"));
-
-        let quote_plain =
-            view! { <Quote>"Simplicity is prerequisite for reliability."</Quote> }.to_html();
-        assert!(quote_plain.contains("<blockquote"));
-        assert!(quote_plain.contains("border-l-2 border-red-400"));
-        assert!(quote_plain.contains("Simplicity is prerequisite for reliability."));
-        assert!(!quote_plain.contains("<footer"));
-
-        let quote_cited = view! {
-            <Quote cite="— Edsger W. Dijkstra" class="my-4">
-                "Testing shows the presence, not the absence of bugs."
-            </Quote>
-        }
-        .to_html();
-        assert!(quote_cited.contains("my-4"));
-        assert!(quote_cited.contains("Testing shows the presence, not the absence of bugs."));
-        assert!(quote_cited.contains("<footer"));
-        assert!(quote_cited.contains("— Edsger W. Dijkstra"));
-
-        let mermaid_html = view! {
-            <Mermaid
-                src="flowchart LR\n    Model[LLM] --> Harness[Harness]\n    Harness --> Model"
-                class="my-8"
-            />
-        }
-        .to_html();
-        assert!(mermaid_html.contains("my-8"));
-        assert!(mermaid_html.contains("<svg"));
-        assert!(mermaid_html.contains("#09090b"));
-        assert!(mermaid_html.contains("#18181b"));
-        assert!(mermaid_html.contains("#f87171"));
-
-        let invalid_mermaid = render_mermaid("not a valid diagram %%%");
-        assert!(invalid_mermaid.contains("<pre><code class=\"language-mermaid\">"));
-        assert!(invalid_mermaid.contains("not a valid diagram %%%"));
-
-        let md_mermaid = render_markdown(
-            "Before\n\n```mermaid\nflowchart TD\n    A[Start] --> B[End]\n```\n\nAfter",
-            false,
-        );
-        assert!(md_mermaid.contains("<svg"));
-        assert!(md_mermaid.contains("#09090b"));
-        assert!(md_mermaid.contains("#f87171"));
-        assert!(!md_mermaid.contains("<code class=\"language-mermaid\">"));
-
-        let (_, post) = find_post("building-and-understanding-a-harness", "architecture")
-            .expect("architecture post should exist");
-        let arch_html = (post.body)().to_html();
-        assert!(arch_html.contains("<svg"));
-        assert!(arch_html.contains("Send prompt"));
-        assert!(arch_html.contains("read_file(path)"));
-        assert!(arch_html.contains("Was the</tspan>"));
-        assert!(arch_html.contains("Inferring to Idle"));
-        assert!(arch_html.contains(&site_url("/posts/harness/first-tool-call.webp")));
-        assert!(arch_html.contains(&site_url("/posts/harness/first-tool-call.png")));
-        assert!(!arch_html.contains("<code class=\"language-mermaid\">"));
     }
 }

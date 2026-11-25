@@ -1,7 +1,10 @@
 pub mod posts;
 
 use crate::Series;
-pub use posts::{ARCHITECTURE_POST, INTRO_POST, SKILLS_AND_CITATIONS_POST, WHY_AND_WHAT_POST};
+pub use posts::{
+    ARCHITECTURE_POST, FIRST_TOOL_CALL_POST, INTRO_POST, SKILLS_AND_CITATIONS_POST,
+    WHY_AND_WHAT_POST,
+};
 
 pub const SERIES: Series = Series {
     slug: "building-and-understanding-a-harness",
@@ -11,6 +14,7 @@ pub const SERIES: Series = Series {
         INTRO_POST,
         WHY_AND_WHAT_POST,
         ARCHITECTURE_POST,
+        FIRST_TOOL_CALL_POST,
         SKILLS_AND_CITATIONS_POST,
     ],
 };

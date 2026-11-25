@@ -52,10 +52,7 @@ fn collect_files(dir: &Path, out: &mut Vec<PathBuf>) {
         let path = entry.path();
         if path.is_dir() {
             collect_files(&path, out);
-        } else if matches!(
-            path.extension().and_then(|e| e.to_str()),
-            Some("rs" | "md")
-        ) {
+        } else if matches!(path.extension().and_then(|e| e.to_str()), Some("rs" | "md")) {
             out.push(path);
         }
     }
@@ -103,7 +100,9 @@ fn extract_mermaid_sources(content: &str) -> Vec<String> {
     let bytes = content.as_bytes();
     let mut i = 0;
     while i < bytes.len() {
-        if bytes[i] == b'r' {
+        let starts_raw_string = bytes[i] == b'r'
+            && (i == 0 || !matches!(bytes[i - 1], b'a'..=b'z' | b'A'..=b'Z' | b'0'..=b'9' | b'_'));
+        if starts_raw_string {
             let mut hashes = 0usize;
             let mut j = i + 1;
             while j < bytes.len() && bytes[j] == b'#' {
@@ -113,6 +112,7 @@ fn extract_mermaid_sources(content: &str) -> Vec<String> {
             if j < bytes.len() && bytes[j] == b'"' {
                 let start = j + 1;
                 let mut k = start;
+                let mut terminated = false;
                 while k < bytes.len() {
                     if bytes[k] == b'"'
                         && k + hashes < bytes.len()
@@ -124,9 +124,13 @@ fn extract_mermaid_sources(content: &str) -> Vec<String> {
                             results.push(s.to_string());
                         }
                         i = k + hashes + 1;
+                        terminated = true;
                         break;
                     }
                     k += 1;
+                }
+                if !terminated {
+                    i += 1;
                 }
                 continue;
             }
