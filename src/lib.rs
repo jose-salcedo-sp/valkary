@@ -487,7 +487,10 @@ mod tests {
         assert!(arch_html.contains("<svg"));
         assert!(arch_html.contains("Send prompt"));
         assert!(arch_html.contains("read_file(path)"));
-        assert!(arch_html.contains("Was the question"));
+        assert!(arch_html.contains("Was the</tspan>"));
+        assert!(arch_html.contains("Inferring to Idle"));
+        assert!(arch_html.contains(&site_url("/posts/harness/first-tool-call.webp")));
+        assert!(arch_html.contains(&site_url("/posts/harness/first-tool-call.png")));
         assert!(!arch_html.contains("<code class=\"language-mermaid\">"));
     }
 }
