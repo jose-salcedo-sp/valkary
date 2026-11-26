@@ -3,6 +3,9 @@
     "https://arxiv.org/html/2609.00006v1": {
       "title": "Harness Engineering:Anatomy, Architecture, and Evolution of Coding AgentsA Source-Code Study of Eleven Systems"
     },
+    "https://github.com/ggml-org/llama.cpp": {
+      "title": "GitHub - ggml-org/llama.cpp: LLM inference in C/C++ · GitHub"
+    },
     "https://github.com/jose-salcedo-sp/harness": {
       "title": "GitHub - jose-salcedo-sp/harness: Personal AI agent harness built from scratch in Rust with GPUI · GitHub"
     },

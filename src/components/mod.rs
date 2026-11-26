@@ -1,3 +1,4 @@
+mod code_excerpt;
 mod link;
 mod link_metadata;
 mod list;
@@ -13,6 +14,7 @@ mod subtitle;
 mod toc;
 mod typewriter;
 
+pub use code_excerpt::CodeExcerpt;
 pub use link::{Link, default_link_meta};
 pub use list::{Li, Ul};
 pub use markdown::{Markdown, render_markdown};

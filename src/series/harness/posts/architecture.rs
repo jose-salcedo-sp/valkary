@@ -15,6 +15,11 @@ const AGENT_LOOP_DIAGRAM: &str = r#"sequenceDiagram
     end
     Model-->>User: Respond to question"#;
 
+const ARCHITECTURE_DIAGRAM: &str = r#"flowchart LR
+    UI["GPUI chatbot"] --> Backend["Rust backend<br/>Minimal agent loop"]
+    Backend -->|"OpenAI-compatible HTTP"| Server["llama-server"]
+    Server --> Model["Bonsai 2 9B"]"#;
+
 pub const ARCHITECTURE_POST: Post = Post {
     slug: "architecture",
     title: "Architecture",
@@ -38,7 +43,11 @@ fn Architecture() -> AnyView {
     view! {
         <div class="space-y-6 leading-relaxed text-zinc-300">
             <Section title="What is a Harness?" id="what-is-a-harness">
-                <P>"While reading a lot about harnesses and coding agents I arrived at the same definition over and over again on many sites. `Agent = Model + Harness`. We know what the model is, everyone's used one even if it is just the ChatGPT chatbot to cheat on your schoolwork. So the only thing we're missing is what is a harness and what are the parts that make it up?"</P>
+                <P>
+                    "While reading a lot about harnesses and coding agents I arrived at the same definition over and over again on many sites. "
+                    <code>"Agent = Model + Harness"</code>
+                    ". We know what the model is, everyone's used one even if it is just the ChatGPT chatbot to cheat on your schoolwork. So the only thing we're missing is what is a harness and what are the parts that make it up?"
+                </P>
 
                 <P>"We will define a harness with the following layers:"</P>
                 <Ul>
@@ -51,7 +60,9 @@ fn Architecture() -> AnyView {
                 </Ul>
 
                 <P>
-                    "When I first started reading about all this, the thing I was most curious about was the `agent loop`. To quote from the paper:"
+                    "When I first started reading about all this, the thing I was most curious about was the "
+                    <code>"agent loop"</code>
+                    ". To quote from the paper:"
                 </P>
 
                 <Quote cite="Harness Engineering: Anatomy, Architecture, and Evolution of Coding Agents -- A Source-Code Study of Eleven Systems">
@@ -71,10 +82,30 @@ is the architectural backbone of every SWE agent."
                     <Li>"GPUI chatbot app frontend"</Li>
                     <Li>"Rust backend with a minimal agent loop"</Li>
                     <Li>
+                        <Link href="https://github.com/ggml-org/llama.cpp" title="llama-server" />
+                        " serving an OpenAI-compatible API"
+                    </Li>
+                    <Li>
                         <Link href="https://prismml.com/news/bonsai-2-family" title="Bonsai 2 9B" />
-                        " model hosted locally"
+                        " model running locally behind llama-server"
                     </Li>
                 </Ul>
+
+                <Mermaid src=ARCHITECTURE_DIAGRAM/>
+                <P>
+                    "The boundaries are intentional. The GPUI layer owns presentation and user input, but it does not know how inference or tools work. The Rust backend owns conversation history and the agent loop. It converts UI commands into model requests, interprets each response, and decides whether to finish the turn or execute another action. "
+                    <code>"llama-server"</code>
+                    " is only an inference provider: it receives an OpenAI-shaped request and streams tokens or structured tool calls back. The model itself remains stateless; every fact it can use must be included in the request the backend builds."
+                </P>
+
+                <P>"That separation gives us a small system we can reason about one boundary at a time. We can replace the local model without changing the loop, replace GPUI without changing tool execution, and test the loop as a state machine without opening a window or making an HTTP request. It also makes responsibility explicit: the model may request an action, but the harness validates and performs it. This distinction becomes important as soon as tools can do more than read a file."</P>
+
+                <P>
+                    "For this first version there is no separate database, memory service, plugin host, or remote backend. Conversation history lives in the running process, "
+                    <code>"read_file"</code>
+                    " is the only tool, and requests travel directly from the desktop app to the local server. Those omissions are deliberate. The goal is to expose the complete path from a prompt to one tool call before adding the layers that make a production harness more capable—and harder to understand."
+                </P>
+
             </Section>
         </div>
     }

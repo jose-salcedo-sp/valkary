@@ -1,6 +1,6 @@
 use leptos::prelude::*;
 
-const BASE_CLASS: &str = "text-base sm:text-lg leading-relaxed text-zinc-300";
+const BASE_CLASS: &str = "text-base sm:text-lg leading-relaxed text-zinc-300 [&_code]:rounded [&_code]:border [&_code]:border-red-400/25 [&_code]:bg-red-400/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-red-300";
 
 #[component]
 pub fn P(#[prop(optional, into)] class: Option<String>, children: Children) -> impl IntoView {
