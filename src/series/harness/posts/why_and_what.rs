@@ -42,12 +42,18 @@ fn Overview() -> AnyView {
                 <Li>"The Agent Loop & Memory: the state machine that builds the prompt, injects rules and skills, manages conversation history/context windows, and decides when the model is done or needs another turn"</Li>
                 <Li>"The Tool & Subagent Runtime: the execution layer that discovers available tools, runs shell commands or headless browsers, spawns isolated subagents with their own personalities, and feeds the results back to the model"</Li>
             </Ul>
-            <P>"I won't get too much into the user interface design and implementation since that is the least interesting part of this project. I've been working on UI for most of my life and going into the design ideas and why I chose red over blue on a button doesn't get us any closer to understanding how a `Build me an automated trading platform that makes $1M MRR MAKE NO MISTAKES` prompt gets us a half-baked website that loses you your only $10 left in your bank account."</P>
+            <P>
+                "I won't get too much into the user interface design and implementation since that is the least interesting part of this project. I've been working on UI for most of my life and going into the design ideas and why I chose red over blue on a button doesn't get us any closer to understanding how a "
+                <code>"Build me an automated trading platform that makes $1M MRR MAKE NO MISTAKES"</code>
+                " prompt gets us a half-baked website that loses you your only $10 left in your bank account."
+            </P>
         </Section>
 
         <Section title="How?" id="how">
             <P>
-                "I will be writing a new `Part` in this series alongside each layer of the harness as I build the UI and backend server in public. All of the code will be open to clone, fork, star, contribute to, or poke around in the harness lives at"
+                "I will be writing a new "
+                <code>"Part"</code>
+                " in this series alongside each layer of the harness as I build the UI and backend server in public. All of the code will be open to clone, fork, star, contribute to, or poke around in the harness lives at"
                 <Link href="https://github.com/jose-salcedo-sp/harness"/>
                 "and the source for this Leptos + Tailwind blog lives at"
                 <Link href="https://github.com/jose-salcedo-sp/valkary"/>

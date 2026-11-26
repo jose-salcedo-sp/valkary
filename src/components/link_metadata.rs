@@ -12,6 +12,10 @@ pub(super) fn find(href: &str) -> Option<LinkMetadata> {
             title: "Harness Engineering:Anatomy, Architecture, and Evolution of Coding AgentsA Source-Code Study of Eleven Systems",
             icon_path: "/favicons/arxiv-org-f7a436a39e.png",
         }),
+        "https://github.com/ggml-org/llama.cpp" => Some(LinkMetadata {
+            title: "GitHub - ggml-org/llama.cpp: LLM inference in C/C++ · GitHub",
+            icon_path: "/favicons/github-com-996e1f714b.png",
+        }),
         "https://github.com/jose-salcedo-sp/harness" => Some(LinkMetadata {
             title: "GitHub - jose-salcedo-sp/harness: Personal AI agent harness built from scratch in Rust with GPUI · GitHub",
             icon_path: "/favicons/github-com-996e1f714b.png",
