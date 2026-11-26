@@ -9,6 +9,7 @@ mod portfolio;
 mod quote;
 mod section;
 mod series_nav;
+mod series_source;
 mod skill_carousel;
 mod subtitle;
 mod toc;
@@ -27,6 +28,7 @@ pub use portfolio::{
 pub use quote::Quote;
 pub use section::Section;
 pub use series_nav::SeriesNav;
+pub use series_source::SeriesSource;
 pub use skill_carousel::{SkillCarousel, SkillTab};
 pub use subtitle::Subtitle;
 pub use toc::TableOfContents;

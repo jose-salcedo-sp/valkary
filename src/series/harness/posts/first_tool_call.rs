@@ -72,18 +72,20 @@ pub const FIRST_TOOL_CALL_POST: Post = Post {
     title: "Our First Tool Call",
     date: "2026-11-25",
     summary: "Following a read_file request through the agent loop, tool runtime, and back to the model.",
-    sections: &[TocSection {
-        id: "first-tool-call",
-        title: "Our First Tool Call",
-    },
-    TocSection {
-        id: "agent-loop",
-        title: "The Agent Loop",
-    },
-    TocSection {
-        id: "tool-runtime",
-        title: "The Tool Runtime",
-    }],
+    sections: &[
+        TocSection {
+            id: "first-tool-call",
+            title: "Our First Tool Call",
+        },
+        TocSection {
+            id: "agent-loop",
+            title: "The Agent Loop",
+        },
+        TocSection {
+            id: "tool-runtime",
+            title: "The Tool Runtime",
+        },
+    ],
     body: FirstToolCall,
 };
 

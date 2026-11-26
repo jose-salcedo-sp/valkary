@@ -4,11 +4,11 @@ pub mod series;
 pub use components::{
     ABOUT_PHRASES, AboutSection, BlogIndex, CodeExcerpt, FEATURED_PROJECTS, FeaturedProject,
     HERO_PHRASES, HeroBackground, HeroSection, Li, Link, Markdown, Mermaid, P, PhraseStyle,
-    ProjectsSection, Quote, Section, SeriesNav, SiteHeader, SkillCarousel, SkillTab, Subtitle,
-    TableOfContents, Typewriter, TypewriterPhase, TypewriterPhrase, TypewriterState, Ul,
+    ProjectsSection, Quote, Section, SeriesNav, SeriesSource, SiteHeader, SkillCarousel, SkillTab,
+    Subtitle, TableOfContents, Typewriter, TypewriterPhase, TypewriterPhrase, TypewriterState, Ul,
     WritingSection, render_markdown, render_mermaid,
 };
-pub use series::{Post, SERIES, Series, TocSection, all_posts, find_post, post_url};
+pub use series::{Post, SERIES, Series, SourceRepo, TocSection, all_posts, find_post, post_url};
 
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
@@ -143,6 +143,7 @@ fn PostPage() -> impl IntoView {
                 <TableOfContents series=series post=post/>
                 {(post.body)()}
                 <div class="pt-6 space-y-6">
+                    <SeriesSource series=series/>
                     <SeriesNav series=series post=post/>
                     <p>
                         <A href=site_url("/blog") attr:class="inline-flex min-h-11 items-center text-sm text-zinc-400 hover:text-white">
@@ -225,6 +226,7 @@ mod tests {
             slug: "harness",
             title: "Harness",
             summary: "",
+            source_repos: &[],
             posts: PARTS,
         };
 

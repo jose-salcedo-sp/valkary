@@ -19,10 +19,18 @@ pub struct Post {
 }
 
 #[derive(Clone, Copy)]
+pub struct SourceRepo {
+    pub name: &'static str,
+    pub description: &'static str,
+    pub url: &'static str,
+}
+
+#[derive(Clone, Copy)]
 pub struct Series {
     pub slug: &'static str,
     pub title: &'static str,
     pub summary: &'static str,
+    pub source_repos: &'static [SourceRepo],
     pub posts: &'static [Post],
 }
 
